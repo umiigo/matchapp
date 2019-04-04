@@ -1,11 +1,13 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React,  {Component} from 'react';
+import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 
-export default class App extends React.Component {
+export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Match App Here</Text>
+        <TouchableHighlight style={styles.button}>
+          <Text>Match App Here</Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -14,8 +16,16 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'midnightblue',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button: {
+    borderRadius: 8,
+    backgroundColor: 'deepskyblue',
+    width: 150,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
