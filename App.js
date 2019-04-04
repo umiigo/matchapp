@@ -1,46 +1,51 @@
-import Expo from 'expo'
 import React, { Component } from 'react'
-import { View, StyleSheet, Image, Text, PanResponder } from 'react-native'
+import { View } from 'react-native'
+import Card from './Card'
 
-const fbImage = 'https://graph.facebook.com/259389830744794/picture?height=500'
+import * as firebase from 'firebase'
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBVy07RSKbExzNGwEjQ6WTEU6qvzOMVGs0",
+  databaseURL: "https://matchapp-c399f.firebaseio.com"
+}
+
+firebase.initializeApp(firebaseConfig)
 export default class App extends Component {
+
+  state = {
+    profileIndex: 0,
+    profiles: []
+  }
+
   componentWillMount() {
-    this.cardPanResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (e, gesture) => console.log(gesture.moveX),
-      onPanResponderRelease: (e, gesture) => console.log('Released', gesture.moveY),
+    firebase.database().ref().child('users').once('value', (snap) => {
+      let profiles = []
+      snap.forEach((profile) => {
+        const { name, bio, birthday, id } = profile.val()
+        profiles.push({ name, bio, birthday, id })
+      })
+      this.setState({ profiles })
     })
   }
-  'test'
+  nextCard = () => {
+    this.setState({ profileIndex: this.state.profileIndex + 1 })
+  }
+
   render() {
+    const { profileIndex } = this.state
     return (
-      <View
-        {...this.cardPanResponder.panHandlers}
-        style={styles.card}>
-        <Image
-          style={{ flex: 1 }}
-          source={{ uri: fbImage }}
-        />
-        <View style={{ margin: 20 }}>
-          <Text style={{ fontSize: 20 }}>Candice, 28</Text>
-          <Text style={{ fontSize: 15, color: 'darkgrey' }}>Supermodel</Text>
-        </View>
+      <View style={{ flex: 1 }}>
+        {this.state.profiles.slice(profileIndex, profileIndex + 3).reverse().map((profile) => {
+          return (
+            <Card
+              key={profile.id}
+              profile={profile}
+              onSwipeOff={this.nextCard}
+            />
+          )
+        })}
       </View>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    overflow: 'hidden',
-    backgroundColor: 'white',
-    margin: 10,
-    marginTop: 100,
-    marginBottom: 100,
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    borderRadius: 8,
-  }
-})
