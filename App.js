@@ -12,6 +12,7 @@ export default class App extends Component {
       onPanResponderRelease: (e, gesture) => console.log('Released', gesture.moveY),
     })
   }
+  'test'
   render() {
     return (
       <View
