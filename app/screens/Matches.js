@@ -71,7 +71,14 @@ export default class Matches extends Component {
     const bio =
       work && work[0] && work[0].position ? work[0].position.name : null;
     return (
-      <TouchableHighlight onPress={() => console.log("pressed")}>
+      <TouchableHighlight
+        onPress={() =>
+          this.props.navigation.navigate("Chat", {
+            user: this.props.user,
+            profile: item
+          })
+        }
+      >
         <View
           style={{
             flexDirection: "row",

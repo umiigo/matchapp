@@ -41,7 +41,7 @@ export default class Profile extends Component {
         </View>
         <Slider
           min={1}
-          max={30}
+          max={100000}
           values={distanceValue}
           onValuesChange={val => this.setState({ distanceValue: val })}
           onValuesChangeFinish={val => this.updateUser("distance", val[0])}
